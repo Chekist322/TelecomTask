@@ -40,7 +40,6 @@ public class TelecomConnection extends Connection {
             new AudioEntry(R.raw.majesty, "Her Majesty"),
     };
 
-    private static final boolean VERBOSE = true;
     private static final String L_TAG = "TestConnection";
 
     private static final int MSG_INITED = 1;
@@ -107,54 +106,54 @@ public class TelecomConnection extends Connection {
 
     @Override
     public void onStateChanged(int state) {
-        if (VERBOSE) log("onStateChanged, state: " + Connection.stateToString(state));
+        log("onStateChanged, state: " + Connection.stateToString(state));
     }
 
     @Override
     public void onPlayDtmfTone(char c) {
-        if (VERBOSE) log("onPlayDtmfTone");
+         log("onPlayDtmfTone");
     }
 
     @Override
     public void onStopDtmfTone() {
-        if (VERBOSE) log("onStopDtmfTone");
+         log("onStopDtmfTone");
     }
 
     @Override
     public void onDisconnect() {
-        if (VERBOSE) log("onDisconnect");
+        log("onDisconnect");
         mHandler.sendEmptyMessageDelayed(MSG_DISCONNECT, 1 * 1000);
     }
 
     @Override
     public void onSeparate() {
-        if (VERBOSE) log("onSeparate");
+        log("onSeparate");
     }
 
     @Override
     public void onAbort() {
-        if (VERBOSE) log("onAbort");
+        log("onAbort");
         onDisconnect();
     }
 
     @Override
     public void onHold() {
-        if (VERBOSE) log("onHold");
+        log("onHold");
     }
 
     @Override
     public void onUnhold() {
-        if (VERBOSE) log("onUnhold");
+        log("onUnhold");
     }
 
     @Override
     public void onAnswer(int videoState) {
-        if (VERBOSE) log("onAnswer");
+        log("onAnswer");
     }
 
     @Override
     public void onReject() {
-        if (VERBOSE) log("onReject");
+        log("onReject");
     }
 
     private void disconnect() {
