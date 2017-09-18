@@ -1,6 +1,5 @@
 package com.example.batrakov.telecomconnectionmarshmellow;
 
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,6 @@ public class ControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
 
-
         PhoneAccountHandle handle = new PhoneAccountHandle(new ComponentName(this, TelecomConnectionService.class), "one");
         mPhoneAccount = PhoneAccount.builder(handle, "Test account")
                 .setCapabilities(
@@ -38,8 +36,6 @@ public class ControlActivity extends AppCompatActivity {
 
         mToggleAccountButton = (Button) findViewById(R.id.togglePhoneAccount);
 
-
-
         mToggleAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,17 +48,13 @@ public class ControlActivity extends AppCompatActivity {
                     tm.registerPhoneAccount(mPhoneAccount);
                     mToggleAccountButton.setText("UnRegister Phone account");
                     mPhoneAccountRegisterred = true;
+
                     Intent intent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
                     startActivity(intent);
-
-
-
-
                     Log.i("Account Enable:", String.valueOf(mPhoneAccount.isEnabled()));
                 }
             }
         });
-
     }
 
 

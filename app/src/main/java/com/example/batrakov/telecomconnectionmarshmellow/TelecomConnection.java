@@ -59,26 +59,22 @@ public class TelecomConnection extends Connection {
                     Log.i("call", "inited");
                     setAudioModeIsVoip(true);
                     setInitialized();
-                    updateAddress();
                     sendEmptyMessageDelayed(MSG_DIALING, 2 * 1000);
                     break;
                 case MSG_DIALING:
                     setDialing();
                     setRingbackRequested(true);
                     sendEmptyMessageDelayed(MSG_ACTIVE, 4 * 1000);
-                    updateAddress();
                     break;
                 case MSG_ACTIVE:
                     setActive();
                     setConnectionCapabilities(CAPABILITY_MUTE|CAPABILITY_SUPPORT_HOLD);
                     sendEmptyMessageDelayed(MSG_ALLOW_HOLD, 60 * 1000);
-                    updateAddress();
                     sendEmptyMessageDelayed(MSG_START_RECORD, 1 * 1000);
                     break;
                 case MSG_ALLOW_HOLD:
                     setConnectionCapabilities(CAPABILITY_HOLD| CAPABILITY_MUTE);
                     sendEmptyMessageDelayed(MSG_DISCONNECT, 5 * 1000);
-                    updateAddress();
                     break;
                 case MSG_DISCONNECT:
                     Log.i("call", "disconnect");
@@ -87,18 +83,15 @@ public class TelecomConnection extends Connection {
                 case MSG_START_RECORD:
                     startMagnitophone();
                     break;
-
             }
         }
     };
     private final Context mContext;
-    private Uri mAddress = null;
     private MediaPlayer mPlayer;
 
     TelecomConnection(Context aContext, Uri aAddress) {
 
         mContext = aContext;
-        mAddress = aAddress;
         mHandler.sendEmptyMessageDelayed(MSG_INITED, 2 * 1000);
 
         int id = Math.abs(aAddress.hashCode() % mAudioEntries.length);
@@ -108,16 +101,8 @@ public class TelecomConnection extends Connection {
         mAudioEntry = mAudioEntries[ id  ];
 
         setAddress(Uri.fromParts(PhoneAccount.SCHEME_TEL, mAudioEntry.mTitle, ""), TelecomManager.PRESENTATION_ALLOWED);
-        //setAddress(Uri.fromParts(PhoneAccount.SCHEME_TEL, "123456", "Before init"), TelecomManager.PRESENTATION_ALLOWED);
         setInitialized();
     }
-
-
-    private void updateAddress() {
-        // setAddress(Uri.fromParts(PhoneAccount.SCHEME_SIP, "12345@sip.ru", "Fragment Active"), TelecomManager.PRESENTATION_ALLOWED);
-        // setCallerDisplayName("12345 Fra", TelecomManager.PRESENTATION_ALLOWED);
-    }
-
 
     private void log(String msg) {
         Log.i(L_TAG, msg);
@@ -188,7 +173,6 @@ public class TelecomConnection extends Connection {
         }
     }
 
-
     private void startMagnitophone() {
         if ( getState() != STATE_ACTIVE ) return;
         MediaPlayer player = new MediaPlayer();
@@ -211,6 +195,5 @@ public class TelecomConnection extends Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
