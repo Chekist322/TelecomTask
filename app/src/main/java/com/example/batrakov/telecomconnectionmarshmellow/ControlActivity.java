@@ -15,7 +15,7 @@ import android.widget.Button;
 public class ControlActivity extends AppCompatActivity {
 
     private PhoneAccount mPhoneAccount;
-    private boolean mPhoneAccountRegisterred;
+    private boolean phoneAccountRegistered;
     private Button mToggleAccountButton;
 
     @Override
@@ -32,7 +32,7 @@ public class ControlActivity extends AppCompatActivity {
                                 PhoneAccount.CAPABILITY_CALL_SUBJECT
                 ).setShortDescription("ShortDescription").build();
 
-        mPhoneAccountRegisterred = false;
+        phoneAccountRegistered = false;
 
         mToggleAccountButton = (Button) findViewById(R.id.togglePhoneAccount);
 
@@ -40,14 +40,14 @@ public class ControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TelecomManager tm = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-                if (mPhoneAccountRegisterred){
+                if (phoneAccountRegistered){
                     tm.unregisterPhoneAccount(mPhoneAccount.getAccountHandle());
                     mToggleAccountButton.setText("Register Phone account");
-                    mPhoneAccountRegisterred = false;
+                    phoneAccountRegistered = false;
                 } else{
                     tm.registerPhoneAccount(mPhoneAccount);
                     mToggleAccountButton.setText("UnRegister Phone account");
-                    mPhoneAccountRegisterred = true;
+                    phoneAccountRegistered = true;
 
                     Intent intent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
                     startActivity(intent);

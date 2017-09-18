@@ -27,9 +27,4 @@ public class TelecomConnectionService extends ConnectionService {
         log("onCreateOutgoingConnection started");
         return new TelecomConnection(getBaseContext(), request.getAddress());
     }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
 }

@@ -96,9 +96,7 @@ public class TelecomConnection extends Connection {
 
         int id = Math.abs(aAddress.hashCode() % mAudioEntries.length);
 
-        log("Uri-address: " + aAddress + " Hash code: " + aAddress.hashCode() + ", index: " + id);
-
-        mAudioEntry = mAudioEntries[ id  ];
+        mAudioEntry = mAudioEntries[id];
 
         setAddress(Uri.fromParts(PhoneAccount.SCHEME_TEL, mAudioEntry.mTitle, ""), TelecomManager.PRESENTATION_ALLOWED);
         setInitialized();
