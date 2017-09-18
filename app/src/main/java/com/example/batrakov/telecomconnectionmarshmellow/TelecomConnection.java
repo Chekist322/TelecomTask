@@ -57,7 +57,6 @@ public class TelecomConnection extends Connection {
             switch (msg.what) {
                 case MSG_INITED:
                     Log.i("call", "inited");
-                    setAudioModeIsVoip(true);
                     setInitialized();
                     sendEmptyMessageDelayed(MSG_DIALING, 2 * 1000);
                     break;
@@ -70,7 +69,7 @@ public class TelecomConnection extends Connection {
                     setActive();
                     setConnectionCapabilities(CAPABILITY_MUTE|CAPABILITY_SUPPORT_HOLD);
                     sendEmptyMessageDelayed(MSG_ALLOW_HOLD, 60 * 1000);
-                    sendEmptyMessageDelayed(MSG_START_RECORD, 1 * 1000);
+                    sendEmptyMessageDelayed(MSG_START_RECORD, 5 * 1000);
                     break;
                 case MSG_ALLOW_HOLD:
                     setConnectionCapabilities(CAPABILITY_HOLD| CAPABILITY_MUTE);
@@ -124,7 +123,7 @@ public class TelecomConnection extends Connection {
     @Override
     public void onDisconnect() {
         if (VERBOSE) log("onDisconnect");
-        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECT, 2 * 1000);
+        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECT, 1 * 1000);
     }
 
     @Override
@@ -162,6 +161,7 @@ public class TelecomConnection extends Connection {
     private void disconnect() {
         if (mPlayer != null) {
             if (mPlayer.isPlaying()) mPlayer.stop();
+            mPlayer.reset();
             mPlayer.release();
             mPlayer = null;
         }
@@ -172,10 +172,11 @@ public class TelecomConnection extends Connection {
     }
 
     private void startMagnitophone() {
+
         if ( getState() != STATE_ACTIVE ) return;
         MediaPlayer player = new MediaPlayer();
         mPlayer = player;
-        player.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
+
         AssetFileDescriptor afd = mContext.getResources().openRawResourceFd(mAudioEntry.mAudioRes);
         try {
             player.setVolume(0.5f, 0.5f);
