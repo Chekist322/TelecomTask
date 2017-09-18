@@ -155,7 +155,6 @@ public class TelecomConnection extends Connection {
     @Override
     public void onReject() {
         if (VERBOSE) log("onReject");
-
     }
 
     private void disconnect() {
