@@ -54,8 +54,8 @@ class TelecomConnection extends Connection {
     private static final int INIT_DELAY = 2000;
     private static final int ACTIVE_DELAY = 4000;
     private static final int HOLD_DELAY = 60000;
-    private static final int DISCONNECT_DELAY = 5000;
-    private static final int RECORD_DELAY = 5000;
+    private static final int DISCONNECT_DELAY = 1000;
+    private static final int RECORD_DELAY = 3000;
     private static final float VOLUME_LEVEL = 0.5f;
 
 

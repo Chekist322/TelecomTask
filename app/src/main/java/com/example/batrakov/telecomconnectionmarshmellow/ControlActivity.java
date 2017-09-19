@@ -28,9 +28,7 @@ public class ControlActivity extends AppCompatActivity {
                 new ComponentName(this, TelecomConnectionService.class), "one");
         mPhoneAccount = PhoneAccount.builder(handle, "Test account")
                 .setCapabilities(
-                        PhoneAccount.CAPABILITY_CONNECTION_MANAGER
-                                | PhoneAccount.CAPABILITY_PLACE_EMERGENCY_CALLS
-                                | PhoneAccount.CAPABILITY_CALL_PROVIDER
+                                  PhoneAccount.CAPABILITY_CALL_PROVIDER
                                 | PhoneAccount.CAPABILITY_CALL_SUBJECT
                 ).setShortDescription("ShortDescription").build();
 
