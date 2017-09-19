@@ -12,43 +12,46 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Created by batrakov on 15.09.17. *
+ */
 public class ControlActivity extends AppCompatActivity {
 
     private PhoneAccount mPhoneAccount;
-    private boolean phoneAccountRegistered;
+    private boolean mPhoneAccountRegistered;
     private Button mToggleAccountButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle aSavedInstanceState) {
+        super.onCreate(aSavedInstanceState);
         setContentView(R.layout.activity_control);
 
-        PhoneAccountHandle handle = new PhoneAccountHandle(new ComponentName(this, TelecomConnectionService.class), "one");
+        PhoneAccountHandle handle = new PhoneAccountHandle(
+                new ComponentName(this, TelecomConnectionService.class), "one");
         mPhoneAccount = PhoneAccount.builder(handle, "Test account")
                 .setCapabilities(
-                        PhoneAccount.CAPABILITY_CONNECTION_MANAGER |
-                                PhoneAccount.CAPABILITY_PLACE_EMERGENCY_CALLS |
-                                PhoneAccount.CAPABILITY_CALL_PROVIDER |
-                                PhoneAccount.CAPABILITY_CALL_SUBJECT
+                        PhoneAccount.CAPABILITY_CONNECTION_MANAGER
+                                | PhoneAccount.CAPABILITY_PLACE_EMERGENCY_CALLS
+                                | PhoneAccount.CAPABILITY_CALL_PROVIDER
+                                | PhoneAccount.CAPABILITY_CALL_SUBJECT
                 ).setShortDescription("ShortDescription").build();
 
-        phoneAccountRegistered = false;
+        mPhoneAccountRegistered = false;
 
         mToggleAccountButton = (Button) findViewById(R.id.togglePhoneAccount);
 
         mToggleAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View aView) {
                 TelecomManager tm = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-                if (phoneAccountRegistered){
+                if (mPhoneAccountRegistered) {
                     tm.unregisterPhoneAccount(mPhoneAccount.getAccountHandle());
                     mToggleAccountButton.setText("Register Phone account");
-                    phoneAccountRegistered = false;
-                } else{
+                    mPhoneAccountRegistered = false;
+                } else {
                     tm.registerPhoneAccount(mPhoneAccount);
                     mToggleAccountButton.setText("UnRegister Phone account");
-                    phoneAccountRegistered = true;
-
+                    mPhoneAccountRegistered = true;
                     Intent intent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
                     startActivity(intent);
                     Log.i("Account Enable:", String.valueOf(mPhoneAccount.isEnabled()));

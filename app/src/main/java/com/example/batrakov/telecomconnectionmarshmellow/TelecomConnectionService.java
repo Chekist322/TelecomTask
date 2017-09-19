@@ -12,19 +12,25 @@ import android.util.Log;
 
 public class TelecomConnectionService extends ConnectionService {
 
-    private void log(String msg){
-        Log.i("TelecomService", msg);
+    /**
+     *
+     * @param aMsg message
+     */
+    private void log(String aMsg) {
+        Log.i("TelecomService", aMsg);
     }
 
     @Override
-    public Connection onCreateIncomingConnection(PhoneAccountHandle connectionManagerPhoneAccount, ConnectionRequest request) {
+    public Connection onCreateIncomingConnection(
+            PhoneAccountHandle aConnectionManagerPhoneAccount, ConnectionRequest aRequest) {
         log("onCreateIncomingConnection started");
-        return super.onCreateIncomingConnection(connectionManagerPhoneAccount, request);
+        return super.onCreateIncomingConnection(aConnectionManagerPhoneAccount, aRequest);
     }
 
     @Override
-    public Connection onCreateOutgoingConnection(PhoneAccountHandle connectionManagerPhoneAccount, ConnectionRequest request) {
+    public Connection onCreateOutgoingConnection(
+            PhoneAccountHandle aConnectionManagerPhoneAccount, ConnectionRequest aRequest) {
         log("onCreateOutgoingConnection started");
-        return new TelecomConnection(getBaseContext(), request.getAddress());
+        return new TelecomConnection(getBaseContext(), aRequest.getAddress());
     }
 }
