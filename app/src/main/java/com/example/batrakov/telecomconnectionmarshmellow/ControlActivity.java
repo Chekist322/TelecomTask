@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,7 +17,6 @@ import android.widget.Button;
 public class ControlActivity extends AppCompatActivity {
 
     private PhoneAccount mPhoneAccount;
-    private boolean mPhoneAccountRegistered;
     private Button mToggleAccountButton;
 
     @Override
@@ -26,7 +24,7 @@ public class ControlActivity extends AppCompatActivity {
         super.onCreate(aSavedInstanceState);
         setContentView(R.layout.activity_control);
 
-        PhoneAccountHandle handle = new PhoneAccountHandle(
+        final PhoneAccountHandle handle = new PhoneAccountHandle(
                 new ComponentName(this, TelecomConnectionService.class), "one");
         mPhoneAccount = PhoneAccount.builder(handle, "Test account")
                 .setCapabilities(
@@ -36,30 +34,34 @@ public class ControlActivity extends AppCompatActivity {
                                 | PhoneAccount.CAPABILITY_CALL_SUBJECT
                 ).setShortDescription("ShortDescription").build();
 
-        mPhoneAccountRegistered = false;
 
         mToggleAccountButton = (Button) findViewById(R.id.togglePhoneAccount);
+
+        if (isPhoneAccountRegistered(handle)) {
+            mToggleAccountButton.setText("UnRegister Phone account");
+        } else {
+            mToggleAccountButton.setText("Register Phone account");
+        }
 
         mToggleAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View aView) {
                 TelecomManager tm = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-                if (mPhoneAccountRegistered) {
+                if (isPhoneAccountRegistered(handle)) {
                     tm.unregisterPhoneAccount(mPhoneAccount.getAccountHandle());
                     mToggleAccountButton.setText("Register Phone account");
-                    mPhoneAccountRegistered = false;
                 } else {
                     tm.registerPhoneAccount(mPhoneAccount);
                     mToggleAccountButton.setText("UnRegister Phone account");
-                    mPhoneAccountRegistered = true;
                     Intent intent = new Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS);
                     startActivity(intent);
-                    Log.i("Account Enable:", String.valueOf(mPhoneAccount.isEnabled()));
                 }
             }
         });
     }
 
-
-
+    private boolean isPhoneAccountRegistered(PhoneAccountHandle aHandle) {
+        TelecomManager tm = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
+        return tm.getPhoneAccount(aHandle) != null;
+    }
 }

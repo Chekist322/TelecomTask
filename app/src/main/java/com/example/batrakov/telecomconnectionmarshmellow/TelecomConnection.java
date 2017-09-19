@@ -168,9 +168,6 @@ class TelecomConnection extends Connection {
         log("onReject");
     }
 
-    /**
-     *
-     */
     private void disconnect() {
         if (mPlayer != null) {
             if (mPlayer.isPlaying()) {
@@ -187,7 +184,6 @@ class TelecomConnection extends Connection {
     }
 
     private void startMagnitophone() {
-
         if (getState() != STATE_ACTIVE) {
             return;
         }
